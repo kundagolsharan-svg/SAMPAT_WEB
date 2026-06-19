@@ -21,6 +21,7 @@ import {
   Search,
   ChevronDown,
   Rocket,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ const menuItems = [
   { name: "Transactions", href: "/transaction/create", icon: Receipt },
   { name: "Analytics", href: "/analyzer", icon: BarChart2 },
   { name: "AI Insights", href: "/analyzer#insights", icon: Sparkles },
+  { name: "AI Chat", href: "/chat", icon: MessageSquare },
   { name: "Budgets", href: "/dashboard#budget", icon: PiggyBank },
   { name: "Reports", href: "/reports", icon: FileDown },
   { name: "Goals", href: "/goals", icon: Target },
@@ -127,7 +129,7 @@ function SidebarContent({ pathname, onClose }) {
           <p className="relative z-10 text-[10px] text-slate-400 text-center mb-3 leading-relaxed">
             Unlock advanced analytics, AI reports and more insights.
           </p>
-          <button className="relative z-10 w-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white text-xs font-bold py-2 rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-indigo-500/20">
+          <button className="relative z-10 w-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white text-xs font-bold py-2 rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-indigo-500/20" suppressHydrationWarning>
             Upgrade Now
           </button>
         </div>
@@ -187,6 +189,7 @@ export default function MainLayout({ children }) {
                 <button
                   onClick={() => setSidebarOpen(false)}
                   className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800"
+                  suppressHydrationWarning
                 >
                   <X size={18} />
                 </button>
@@ -209,6 +212,7 @@ export default function MainLayout({ children }) {
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-slate-700/50"
+              suppressHydrationWarning
             >
               <Menu size={18} />
             </button>
@@ -233,6 +237,7 @@ export default function MainLayout({ children }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border-none outline-none text-xs text-slate-200 placeholder-slate-500 w-full"
+                suppressHydrationWarning
               />
               <span className="text-[9px] text-slate-600 font-bold border border-slate-700 px-1 py-0.5 rounded hidden lg:block">
                 ⌘K
@@ -244,6 +249,7 @@ export default function MainLayout({ children }) {
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl bg-slate-800/40 border border-slate-700/50 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                suppressHydrationWarning
               >
                 <Bell size={16} />
                 <span className="absolute top-1 right-1 w-4 h-4 bg-rose-500 rounded-full text-[8px] font-black text-white flex items-center justify-center">

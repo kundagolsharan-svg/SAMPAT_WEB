@@ -33,19 +33,28 @@ export default function ChatBot() {
     if (!input.trim() || isLoading) return;
 
     const userMessage = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setInput("");
     setIsLoading(true);
 
     try {
-      const response = await getChatResponse(input);
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
+      // Pass conversation history for context (excluding the new user message)
+      const history = updatedMessages.slice(0, -1).map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+      const result = await getChatResponse(input, history);
+      const aiText = result?.success
+        ? result.response
+        : `⚠️ **AI Error**\n\n${result?.error || "Unknown error occurred."}`;
+      setMessages((prev) => [...prev, { role: "assistant", content: aiText }]);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: `⚠️ **AI Temporarily Unavailable**\n\n${error.message}\n\n*If you just set up your API key, please allow 30–60 minutes for it to activate.*`,
+          content: `⚠️ **AI Temporarily Unavailable**\n\n${error.message}`,
         },
       ]);
     } finally {
@@ -71,6 +80,7 @@ export default function ChatBot() {
             boxShadow: "0 8px 32px rgba(99,102,241,0.5)",
           }}
           aria-label="Open SAMPAT AI"
+          suppressHydrationWarning
         >
           <MessageCircle className="h-7 w-7 text-white" />
           {/* Pulse ring */}
@@ -118,6 +128,7 @@ export default function ChatBot() {
             <button
               onClick={() => setIsOpen(false)}
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+              suppressHydrationWarning
             >
               <X className="h-5 w-5" />
             </button>
@@ -209,6 +220,7 @@ export default function ChatBot() {
                     setInput(p);
                   }}
                   className="whitespace-nowrap px-3 py-1.5 rounded-xl bg-white border border-indigo-100 text-xs font-medium text-indigo-600 hover:bg-indigo-50 hover:border-indigo-200 transition-colors shadow-sm shrink-0"
+                  suppressHydrationWarning
                 >
                   {p}
                 </button>
@@ -228,6 +240,7 @@ export default function ChatBot() {
                 onChange={(e) => setInput(e.target.value)}
                 className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 h-9 shadow-none text-sm text-slate-700 font-medium placeholder:text-slate-400"
                 disabled={isLoading}
+                suppressHydrationWarning
               />
               <Button
                 type="submit"
@@ -237,6 +250,7 @@ export default function ChatBot() {
                 style={{
                   background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
                 }}
+                suppressHydrationWarning
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

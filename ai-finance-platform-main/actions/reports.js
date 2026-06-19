@@ -67,7 +67,7 @@ export async function getMonthlyReportData(month, year) {
 
     // AI Summary
     const prompt = `
-      Summarize this financial data for ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(startDate)} ${year}:
+      You are an expert financial advisor named SAMPAT AI. Summarize this financial data for ${new Intl.DateTimeFormat('en-US', { month: 'long' }).format(startDate)} ${year}:
       Total Income: INR ${totalIncome}
       Total Expenses: INR ${totalExpenses}
       Top Expense Categories: ${JSON.stringify(categoryBreakdown)}
@@ -75,8 +75,8 @@ export async function getMonthlyReportData(month, year) {
       
       Instructions:
       1. All amounts are in Indian Rupees (INR). Use the "₹" symbol or "INR" in your response.
-      2. Provide a brief, professional summary (max 3-4 sentences).
-      3. Provide 2-3 actionable tips based on the data.
+      2. Provide a brief, professional summary (max 3-4 sentences) of the month's performance.
+      3. Provide 3-5 SPECIFIC, ACTIONABLE recommendations to improve money flow, cut unnecessary costs, and increase savings based on this data. Format the recommendations clearly.
     `;
     
     const aiSummary = await generateWithFallback(prompt);
